@@ -18,7 +18,15 @@ import com.ali1200.store.ui.features.IntroScreen
 import com.ali1200.store.ui.theme.BackgroundMain
 import com.ali1200.store.ui.theme.MainAppTheme
 import com.ali1200.store.util.MyScreens
-import androidx.navigation.compose.NavHost
+import dev.burnoo.cokoin.Koin
+import dev.burnoo.cokoin.get
+import dev.burnoo.cokoin.navigation.KoinNavHost
+import com.ali1200.store.di.myModules
+import com.ali1200.store.model.repository.TokenInMemory
+import com.ali1200.store.model.repository.user.UserRepository
+import org.koin.android.ext.koin.androidContext
+import com.ali1200.store.ui.features.signUp.SignUpScreen
+import com.ali1200.store.ui.features.signIn.SignInScreen
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -26,9 +34,19 @@ class MainActivity : ComponentActivity() {
         window.decorView.layoutDirection = View.LAYOUT_DIRECTION_LTR
         setContent {
 
-            MainAppTheme {
-                Surface(color = BackgroundMain, modifier = Modifier.fillMaxSize()) {
-                    DuniBazaarUi()
+            Koin(appDeclaration = {
+                androidContext(this@MainActivity)
+                modules(myModules)
+            }) {
+                MainAppTheme {
+                    Surface(color = BackgroundMain, modifier = Modifier.fillMaxSize()) {
+
+                        val userRepository :UserRepository = get()
+                        userRepository.loadToken()
+
+                        DuniBazaarUi()
+
+                    }
                 }
             }
 
@@ -53,11 +71,15 @@ fun DefaultPreview() {
 @Composable
 fun DuniBazaarUi() {
     val navController = rememberNavController()
-    NavHost(navController = navController, startDestination = MyScreens.MainScreen.route) {
+    KoinNavHost(navController = navController, startDestination = MyScreens.MainScreen.route) {
 
         composable(MyScreens.MainScreen.route) {
 
-            IntroScreen()
+            if(TokenInMemory.token != null) {
+                NotReadyScreen("Main")
+            } else {
+                IntroScreen()
+            }
 
         }
 
@@ -78,11 +100,11 @@ fun DuniBazaarUi() {
         }
 
         composable(MyScreens.SignUpScreen.route) {
-            NotReadyScreen("SignUp")
+            SignUpScreen()
         }
 
         composable(MyScreens.SignInScreen.route) {
-            NotReadyScreen("SignIn")
+            SignInScreen()
         }
 
     }

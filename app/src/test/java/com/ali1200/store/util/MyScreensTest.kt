@@ -22,7 +22,7 @@ class MyScreensTest {
 
     @Test
     fun productRoute_withArgument_isBuiltCorrectly() {
-        val route = MyScreens.ProductScreen.route + "/" + "{productId}"
+        val route = MyScreens.ProductScreen.route + "/" + "{$KEY_PRODUCT_ARG}"
         assertEquals("productScreen/{productId}", route)
     }
 }
