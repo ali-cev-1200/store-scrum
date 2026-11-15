@@ -24,6 +24,17 @@ interface ApiService {
     @GET("refreshToken")
     fun refreshToken(): Call<LoginResponse>
 
+    @GET("getProducts")
+    suspend fun getAllProducts(): ProductResponse
+
+    @GET("getSliderPics")
+    suspend fun getAllAds(): AdsResponse
+
+}
+
+object ApiConfig {
+    // E2E tests point this at a local MockWebServer
+    var baseUrl = BASE_URL
 }
 
 fun createApiService(): ApiService {
@@ -44,7 +55,7 @@ fun createApiService(): ApiService {
         }.build()
 
     val retrofit = Retrofit.Builder()
-        .baseUrl(BASE_URL)
+        .baseUrl(ApiConfig.baseUrl)
         .addConverterFactory(GsonConverterFactory.create())
         .client(okHttpClient)
         .build()

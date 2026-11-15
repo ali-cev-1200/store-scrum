@@ -25,6 +25,7 @@ import com.ali1200.store.di.myModules
 import com.ali1200.store.model.repository.TokenInMemory
 import com.ali1200.store.model.repository.user.UserRepository
 import org.koin.android.ext.koin.androidContext
+import com.ali1200.store.ui.features.main.MainScreen
 import com.ali1200.store.ui.features.signUp.SignUpScreen
 import com.ali1200.store.ui.features.signIn.SignInScreen
 
@@ -76,7 +77,7 @@ fun DuniBazaarUi() {
         composable(MyScreens.MainScreen.route) {
 
             if(TokenInMemory.token != null) {
-                NotReadyScreen("Main")
+                MainScreen()
             } else {
                 IntroScreen()
             }
