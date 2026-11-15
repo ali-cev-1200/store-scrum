@@ -25,7 +25,11 @@ import com.ali1200.store.di.myModules
 import com.ali1200.store.model.repository.TokenInMemory
 import com.ali1200.store.model.repository.user.UserRepository
 import org.koin.android.ext.koin.androidContext
+import androidx.navigation.NavType
+import androidx.navigation.navArgument
+import com.ali1200.store.util.KEY_CATEGORY_ARG
 import com.ali1200.store.ui.features.main.MainScreen
+import com.ali1200.store.ui.features.cart.CategoryScreen
 import com.ali1200.store.ui.features.signUp.SignUpScreen
 import com.ali1200.store.ui.features.signIn.SignInScreen
 
@@ -88,8 +92,13 @@ fun DuniBazaarUi() {
             NotReadyScreen("Product")
         }
 
-        composable(MyScreens.CategoryScreen.route + "/{categoryName}") {
-            NotReadyScreen("Category")
+        composable(
+            route = MyScreens.CategoryScreen.route + "/" + "{$KEY_CATEGORY_ARG}",
+            arguments = listOf(navArgument(KEY_CATEGORY_ARG) {
+                type = NavType.StringType
+            })
+        ) {
+            CategoryScreen(it.arguments!!.getString(KEY_CATEGORY_ARG, "null"))
         }
 
         composable(MyScreens.ProfileScreen.route) {

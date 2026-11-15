@@ -8,6 +8,7 @@ import com.ali1200.store.model.repository.product.ProductRepository
 import com.ali1200.store.model.repository.product.ProductRepositoryImpl
 import com.ali1200.store.model.repository.user.UserRepository
 import com.ali1200.store.model.repository.user.UserRepositoryImpl
+import com.ali1200.store.ui.features.cart.CategoryViewModel
 import com.ali1200.store.ui.features.main.MainViewModel
 import com.ali1200.store.ui.features.signIn.SignInViewModel
 import com.ali1200.store.ui.features.signUp.SignUpViewModel
@@ -25,6 +26,7 @@ val myModules = module {
     single<UserRepository> { UserRepositoryImpl(get(), get()) }
     single<ProductRepository> { ProductRepositoryImpl(get(), get<AppDatabase>().productDao()) }
 
+    viewModel { CategoryViewModel(get()) }
     viewModel { SignUpViewModel(get()) }
     viewModel { SignInViewModel(get()) }
     viewModel { (isNetConnected: Boolean) -> MainViewModel(get(), isNetConnected) }
